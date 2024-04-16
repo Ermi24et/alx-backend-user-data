@@ -47,7 +47,7 @@ def authen():
         if auth.require_auth(request.path, exlud_paths):
             if not auth.authorization_header(request):
                 return abort(401)
-            if not auth.current_user(request) == None:
+            if not auth.current_user(request):
                 return abort(403)
     return
 
