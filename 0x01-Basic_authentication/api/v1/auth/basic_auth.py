@@ -2,7 +2,9 @@
 """a module that contains subclass of Auth"""
 from api.v1.auth.auth import Auth
 import base64
-from typing import Tuple
+from typing import Tuple, TypeVar
+from models.user import User
+from models.base import Base
 
 
 class BasicAuth(Auth):
@@ -40,3 +42,18 @@ class BasicAuth(Auth):
                     return (list_str[0], list_str[1])
                 return (None, None)
         return (None, None)
+
+    def user_object_from_credentials(self, user_email: str,
+                                     user_pwd: str) -> TypeVar('User'):
+        """a method that returns the User instance based on his email
+        and password"""
+        if user_email and user_pwd:
+            if isinstance(user_email, str) and isinstance(user_pwd, str):
+                u = User()
+                users = u.search(attributes={"email": user_email})
+                if len(users) != 0:
+                    if users[0].is_valid_password(user_pwd):
+                        return users[0]
+                    return None
+                return None
+        return None
