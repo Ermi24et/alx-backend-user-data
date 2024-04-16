@@ -19,6 +19,20 @@ if os.getenv('AUTH_TYPE') == 'auth':
     auth = Auth()
 
 
+@app.before_request
+def authen():
+    """handler before_request"""
+    exlud_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
+                   '/api/v1/forbidden/']
+    if auth:
+        if auth.require_auth(request.path, exlud_paths):
+            if not auth.authorization_header(request):
+                return abort(401)
+            if not auth.current_user(request):
+                return abort(403)
+    return
+
+
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
@@ -36,20 +50,6 @@ def unauthorized(e) -> str:
 def forbidden(e) -> str:
     """authorized but not allowed to access to a resource"""
     return jsonify({"error": "Forbidden"}), 403
-
-
-@app.before_request
-def authen():
-    """handler before_request"""
-    exlud_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
-                   '/api/v1/forbidden/']
-    if auth:
-        if auth.require_auth(request.path, exlud_paths):
-            if not auth.authorization_header(request):
-                return abort(401)
-            if not auth.current_user(request):
-                return abort(403)
-    return
 
 
 if __name__ == "__main__":
