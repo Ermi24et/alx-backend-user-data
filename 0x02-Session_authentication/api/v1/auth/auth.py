@@ -27,7 +27,7 @@ class Auth:
         """a public method that returns None temporarily"""
         return None
 
-    def session_cookie(self, request=None):
+    def session_cookie(self, request=None) -> str:
         """a method that returns a cookie value from a request"""
         if request:
             if os.getenv('SESSION_NAME') == '_my_session_id':
