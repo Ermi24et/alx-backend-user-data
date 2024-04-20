@@ -7,7 +7,7 @@ from models.user import User
 
 
 @app_views.route("/auth_session/login", methods=["POST"], strict_slashes=False)
-def session_auth() -> str:
+def session_login() -> str:
     """a method that handles all routes for Session authentication"""
     email = request.form.get("email")
     if not email:
@@ -29,3 +29,13 @@ def session_auth() -> str:
     response = jsonify(user.to_json())
     response.set_cookie(os.getenv("SESSION_NAME"), session_id)
     return response
+
+
+@app_views.route('auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
+def session_logout():
+    """logs out user session"""
+    from api.v1.app import auth
+    if not auth.destroy_session(request):
+        abort(404)
+    return jsonify({}), 200
