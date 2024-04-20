@@ -9,10 +9,10 @@ from models.user import User
 @app_views.route("/auth_session/login", methods=["POST"], strict_slashes=False)
 def session_auth() -> str:
     """a method that handles all routes for Session authentication"""
-    email = request.form.get('email')
+    email = request.form.get("email")
     if not email:
         return jsonify({"error": "email missing"}), 400
-    password = request.form.get('password')
+    password = request.form.get("password")
     if not password:
         return jsonify({"error": "password missing"}), 400
     users = User.search({"email": email})
@@ -27,5 +27,5 @@ def session_auth() -> str:
 
     session_id = auth.create_session(user.id)
     response = jsonify(user.to_json())
-    response.set_cookie(os.getenv('SESSION_NAME'), session_id)
+    response.set_cookie(os.getenv("SESSION_NAME"), session_id)
     return response
