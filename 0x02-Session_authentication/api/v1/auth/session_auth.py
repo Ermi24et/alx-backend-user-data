@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 """A module that contains SessionAuth class that inherits from Auth"""
-from typing import TypeVar
 from uuid import uuid4
 from api.v1.auth.auth import Auth
-from api.v1.views.users import User
 
 
 class SessionAuth(Auth):
@@ -21,12 +19,14 @@ class SessionAuth(Auth):
     def user_id_for_session_id(self, session_id: str = None) -> str:
         """a method that returns a User ID based on s Session ID"""
         if session_id and isinstance(session_id, str):
-            user_id = self.user_id_by_session_id.get(session_id)
+            user_id = self.user_id_by_session_id.get(session_id, None)
             return user_id
         return None
 
     def current_user(self, request=None):
         """a method that returns a User instance based on a cookie value"""
+        from models.user import User
+
         session_id = self.session_cookie(request)
         user_id = self.user_id_for_session_id(session_id)
         user = User.get(user_id)
