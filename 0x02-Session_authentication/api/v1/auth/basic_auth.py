@@ -25,14 +25,15 @@ class BasicAuth(Auth):
         if base64_authorization_header:
             if isinstance(base64_authorization_header, str):
                 try:
-                    bytes_seq = base64.b64decode(base64_authorization_header)
+                    bytes_seq = base64.b64decode(base64_authorization_header,
+                                                 validate=True)
                     return bytes_seq.decode('utf-8')
-                except Exception:
+                except (base64.binascii.Error, UnicodeDecodeError):
                     return None
         return None
 
     def extract_user_credentials(self, decoded_base64_authorization_header:
-                                 str) -> Tuple[str, str]:
+                                 str) -> Tuple[str]:
         """a method that rerurns the user email and password from the Base64
         decoded value"""
         if decoded_base64_authorization_header:
@@ -49,8 +50,11 @@ class BasicAuth(Auth):
         and password"""
         if user_email and user_pwd:
             if isinstance(user_email, str) and isinstance(user_pwd, str):
-                u = User()
-                users = u.search(attributes={"email": user_email})
+                try:
+                    u = User()
+                    users = u.search(attributes={"email": user_email})
+                except KeyError:
+                    return None
                 if len(users) != 0:
                     if users[0].is_valid_password(user_pwd):
                         return users[0]
