@@ -18,17 +18,17 @@ class Auth:
 
     def authorization_header(self, request=None) -> str:
         """a method that returns None temporarily"""
-        if not request and not request.headers.get('Authorization'):
+        if not request:
             return None
         else:
-            return request.headers.get('Authorization')
+            return request.headers.get('Authorization', None)
 
-    def current_user(self, request=None) -> TypeVar('User'):
+    def current_user(self, request=None) -> TypeVar("User"):
         """a public method that returns None temporarily"""
         return None
 
-    def session_cookie(self, request=None) -> str:
+    def session_cookie(self, request=None):
         """a method that returns a cookie value from a request"""
         if request:
-            return request.cookies.get(os.getenv('SESSION_NAME'))
+            return request.cookies.get(os.getenv('SESSION_NAME'), None)
         return None
