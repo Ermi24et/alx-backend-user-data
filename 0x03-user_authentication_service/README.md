@@ -18,4 +18,6 @@ At the end of this project, you are expected to be able to [explain to anyone](h
 
 ## Setup
 You will need to install `bcrypt`
-```pip install bcrypt```
+```
+pip install bcrypt
+```
