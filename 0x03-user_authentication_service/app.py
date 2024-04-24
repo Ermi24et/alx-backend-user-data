@@ -38,7 +38,7 @@ def login() -> str:
 
 
 @app.route("/sessions", methods=["DELETE"])
-def logout() -> None:
+def logout() -> str:
     """destroy a session and logs out"""
     session_id = request.cookies.get("session_id")
     user = AUTH.get_user_from_session_id(session_id)
@@ -46,6 +46,16 @@ def logout() -> None:
         abort(403)
     AUTH.destroy_session(user.id)
     return redirect('/')
+
+
+@app.route("/profile")
+def profile() -> str:
+    """user profile"""
+    session_id = request.cookies.get("session_id")
+    user = AUTH.get_user_from_session_id(session_id)
+    if not user:
+        abort(403)
+    return jsonify({"email": user.email}), 200
 
 
 if __name__ == "__main__":
