@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/')
 def jsonified():
     """returns jsonified payload"""
-    return jsonify()
+    return jsonify({"message": "Bienvenue"})
 
 
 if __name__ == "__main__":
