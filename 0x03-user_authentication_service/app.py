@@ -5,7 +5,7 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 
-@app.route('/', strict_slashes=False)
+@app.route('/')
 def jsonified():
     """returns jsonified payload"""
     return jsonify()
