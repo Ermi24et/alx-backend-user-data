@@ -4,7 +4,7 @@ import bcrypt
 from typing import TypeVar
 
 
-def _hash_password(password: str) -> TypeVar:
+def _hash_password(password: str) -> str:
     """a method that takes in a password and returns bytes"""
     bytes = password.encode('utf-8')
     salt = bcrypt.gensalt()
