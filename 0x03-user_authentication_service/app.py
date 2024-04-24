@@ -14,7 +14,7 @@ def jsonified():
 
 
 @app.route('/users', methods=['POST'])
-def users():
+def users() -> str:
     """a method to register a user"""
     email = request.form.get("email")
     password = request.form.get("password")
