@@ -55,4 +55,4 @@ class DB:
         for k, v in kwargs.items():
             if not hasattr(User, k):
                 raise ValueError()
-            setattr(user, k, v)
+            user[k] = v
